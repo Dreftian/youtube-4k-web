@@ -1,7 +1,7 @@
 name: Deploy
 
-# Publica el sitio en GitHub Pages. No hay build: los ficheros de la raíz
-# ya son el sitio, así que esto solo los copia al sitio publicado.
+# Publica el sitio en GitHub Pages. El repo ya contiene el build (`dist/`),
+# así que esto no compila nada: sube lo que hay.
 
 on:
   push:
@@ -28,15 +28,18 @@ jobs:
 
       - uses: actions/configure-pages@v5
 
-      # Solo los ficheros del sitio. El repo también tiene README, .gitignore
-      # y este propio workflow, que no deben acabar publicados.
+      # El repo tiene README y este propio workflow, que no deben publicarse.
+      # Se copia todo lo demás: index.html, assets/, favicon, robots, sitemap.
       - name: Preparar el sitio
         run: |
+          set -euo pipefail
           mkdir -p _site
-          for f in index.html styles.css script.js favicon.svg robots.txt sitemap.xml; do
-            cp "$f" _site/
+          for f in index.html favicon.svg og.svg robots.txt sitemap.xml; do
+            [ -f "$f" ] && cp "$f" _site/
           done
-          ls -la _site
+          [ -d assets ] && cp -r assets _site/
+          find _site -type f | sort
+          test -f _site/index.html
 
       - uses: actions/upload-pages-artifact@v3
         with:
