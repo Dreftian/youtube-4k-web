@@ -1,4 +1,2 @@
 User-agent: *
 Allow: /
-
-Sitemap: https://dreftian.github.io/youtube-4k-web/sitemap.xml
