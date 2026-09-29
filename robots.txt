@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://youtube-4k.vercel.app/sitemap.xml
+Sitemap: https://dreftian.github.io/youtube-4k-web/sitemap.xml

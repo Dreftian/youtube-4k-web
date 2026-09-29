@@ -41,6 +41,13 @@ python -m http.server 8080
 
 ## Despliegue
 
-Vercel, con la raíz en esta carpeta. No hace falta configuración de build.
+GitHub Pages, con `.github/workflows/pages.yml`: cada push a `main` publica
+los ficheros. Sin build, sin configuración.
+
+O en Vercel, con la raíz en esta carpeta: tampoco hace falta build.
+
+En ambos casos la URL será `dreftian.github.io/youtube-4k-web/` o el dominio
+propio, y hay que actualizar el `canonical`, el `og:url`, `robots.txt` y
+`sitemap.xml`.
 
 ## Creado por Dreftian.

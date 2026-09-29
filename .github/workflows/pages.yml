@@ -1,0 +1,46 @@
+name: Deploy
+
+# Publica el sitio en GitHub Pages. No hay build: los ficheros de la raíz
+# ya son el sitio, así que esto solo los copia al sitio publicado.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/configure-pages@v5
+
+      # Solo los ficheros del sitio. El repo también tiene README, .gitignore
+      # y este propio workflow, que no deben acabar publicados.
+      - name: Preparar el sitio
+        run: |
+          mkdir -p _site
+          for f in index.html styles.css script.js favicon.svg robots.txt sitemap.xml; do
+            cp "$f" _site/
+          done
+          ls -la _site
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - id: deployment
+        uses: actions/deploy-pages@v4
